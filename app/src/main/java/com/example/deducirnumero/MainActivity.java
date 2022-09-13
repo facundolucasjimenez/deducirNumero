@@ -13,9 +13,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainActivity extends AppCompatActivity {
 
     //int nroCpu;
-    int[] cpu; // va a ser unico y no se va a cambiar (4)
-    int[] jugador; // este se va a reemplazar por cada intento, dimension es fija (4)
-    int[] intentos; // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
+    int[] cpu = new int[4]; // va a ser unico y no se va a cambiar (4)
+    int[] jugador = new int[4]; // este se va a reemplazar por cada intento, dimension es fija (4)
+    int[] intentos = new int[100]; // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
     int cantIntentos;
     int cantIngreso;
     Button abandonar, volverAIntentar, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
