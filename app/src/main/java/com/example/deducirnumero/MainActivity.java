@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -13,13 +16,16 @@ import java.util.concurrent.ThreadLocalRandom;
 public class MainActivity extends AppCompatActivity {
 
     //int nroCpu;
+    int i;
     int[] cpu = new int[4]; // va a ser unico y no se va a cambiar (4)
     int[] jugador = new int[4]; // este se va a reemplazar por cada intento, dimension es fija (4)
     int[] intentos = new int[100]; // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
     int cantIntentos;
     int cantIngreso;
-    Button abandonar, volverAIntentar, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
+    Button btnValidar, salir, nuevoIntento, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
     Integer[] botones;
+    TextView nro_cpu, textViewNroIngresado, msjUsuario;
+    ScrollView listaIntentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,23 +42,28 @@ public class MainActivity extends AppCompatActivity {
         button_0 = findViewById(R.id.button_0);
         button_0.setEnabled(false);
 
+        btnValidar = findViewById(R.id.btnValidar);
+        btnValidar.setEnabled(false);
+
         cantIngreso=0;
     }
 
     protected void generarNroCpu() {
-        int primerDigito = ThreadLocalRandom.current().nextInt(1, 10); // bound es 9+1
+        Random rand = new Random();
+        int primerDigito = rand.nextInt(8); // 8 porque techo es 9
+        primerDigito++;
 
-        int segundoDigito = ThreadLocalRandom.current().nextInt(0, 10);
+        int segundoDigito = rand.nextInt(9);
         while (segundoDigito==primerDigito){
             segundoDigito = ThreadLocalRandom.current().nextInt(0, 10);
         }
 
-        int tercerDigito = ThreadLocalRandom.current().nextInt(0, 10);
+        int tercerDigito = rand.nextInt(9);
         while (tercerDigito==primerDigito || tercerDigito==segundoDigito){
             tercerDigito = ThreadLocalRandom.current().nextInt(0, 10);
         }
 
-        int cuartoDigito = ThreadLocalRandom.current().nextInt(0, 10);
+        int cuartoDigito = rand.nextInt(9);
         while (cuartoDigito==primerDigito || cuartoDigito==segundoDigito || cuartoDigito==tercerDigito){
             cuartoDigito = ThreadLocalRandom.current().nextInt(0, 10);
         }
@@ -61,21 +72,57 @@ public class MainActivity extends AppCompatActivity {
         cpu[1] = segundoDigito;
         cpu[2] = tercerDigito;
         cpu[3] = cuartoDigito;
+
+        nro_cpu = findViewById(R.id.nro_cpu);
+        String aux = cpu[0]+""+cpu[1]+""+cpu[2]+""+cpu[3];
+        nro_cpu.setText(aux);
+
+
     }
 
-    protected void clickUsuario(View v){
+    public void clickUsuario(View v){
         int numBoton = Arrays.asList(botones).indexOf(v.getId());
         Button boton= (Button)v;
         boton.setEnabled(false);
-        if (cantIngreso==1){
+        if (cantIngreso==0){
             button_0.setEnabled(true);
         }
         jugador[cantIngreso] = numBoton;
         cantIngreso++;
 
+        if (cantIngreso==4){
+            button_0 = findViewById(R.id.button_0);
+            button_1 = findViewById(R.id.button_1);
+            button_2 = findViewById(R.id.button_2);
+            button_3 = findViewById(R.id.button_3);
+            button_4 = findViewById(R.id.button_4);
+            button_5 = findViewById(R.id.button_5);
+            button_6 = findViewById(R.id.button_6);
+            button_7 = findViewById(R.id.button_7);
+            button_8 = findViewById(R.id.button_8);
+            button_9 = findViewById(R.id.button_9);
+            button_0.setEnabled(false);
+            button_1.setEnabled(false);
+            button_2.setEnabled(false);
+            button_3.setEnabled(false);
+            button_4.setEnabled(false);
+            button_5.setEnabled(false);
+            button_6.setEnabled(false);
+            button_7.setEnabled(false);
+            button_8.setEnabled(false);
+            button_9.setEnabled(false);
+
+            textViewNroIngresado = findViewById(R.id.textViewNroIngresado);
+            //int auxIndice = cantIntentos*6;
+            String aux = jugador[0] + "" + jugador[1] + "" + jugador[2] + "" + jugador[3];
+            textViewNroIngresado.setText(aux);
+
+            btnValidar = findViewById(R.id.btnValidar);
+            btnValidar.setEnabled(true);
+        }
     }
 
-    protected int comparar(){
+    public int comparar(){
         int bien = 0;
         int regular = 0;
         for (int i = 0; i<4; i++){ // como si fuese una matriz
@@ -103,15 +150,75 @@ public class MainActivity extends AppCompatActivity {
         return bien;
     }
 
-    protected void validarGanador(){
-        if (cantIngreso==3){ // cuando termine de ingresar el nro
+    public void validarGanador(View v){
             if (comparar()==4){
-
+                msjUsuario = findViewById(R.id.msjUsuario);
+                msjUsuario.setText("GANASTE!!!!!");
+                nuevoIntento = findViewById(R.id.btnNuevoIntento);
+                nuevoIntento.setEnabled(false);
             }
             else{
                 cantIngreso = 0;
-                // agregar el intento a la lista de la interfaz
+                msjUsuario = findViewById(R.id.msjUsuario);
+                msjUsuario.setText("Volvé a intentarlo!");
+                actualizarLista();
             }
+    }
+
+    public void actualizarLista(){
+        listaIntentos = findViewById(R.id.listaIntentos);
+        LinearLayout layout = (LinearLayout)findViewById(R.id.layoutListaIntentos);
+
+        layout.removeAllViewsInLayout();
+
+        TextView subtitulo = new TextView(this);
+        subtitulo.setText("Numero       Bien    Regular");
+        layout.addView(subtitulo);
+
+        for (int i= 0; i<cantIntentos*6; i=i+6) {
+            String aux = intentos[i]+""+intentos[i+1]+""+intentos[i+2]+""+intentos[i+3]+"               "+intentos[i+4]+"           "+intentos[i+5];
+            TextView a = new TextView(this);
+            a.setText(aux);
+            layout.addView(a);
         }
+    }
+
+    public void nuevoIntento(View v){
+        cantIngreso=0;
+
+        btnValidar = findViewById(R.id.btnValidar);
+        btnValidar.setEnabled(false);
+
+        button_1 = findViewById(R.id.button_1);
+        button_2 = findViewById(R.id.button_2);
+        button_3 = findViewById(R.id.button_3);
+        button_4 = findViewById(R.id.button_4);
+        button_5 = findViewById(R.id.button_5);
+        button_6 = findViewById(R.id.button_6);
+        button_7 = findViewById(R.id.button_7);
+        button_8 = findViewById(R.id.button_8);
+        button_9 = findViewById(R.id.button_9);
+        button_1.setEnabled(true);
+        button_2.setEnabled(true);
+        button_3.setEnabled(true);
+        button_4.setEnabled(true);
+        button_5.setEnabled(true);
+        button_6.setEnabled(true);
+        button_7.setEnabled(true);
+        button_8.setEnabled(true);
+        button_9.setEnabled(true);
+
+        textViewNroIngresado = findViewById(R.id.textViewNroIngresado);
+        textViewNroIngresado.setText("____");
+    }
+
+    public void salir(View v){
+        finish();
+        System.exit(0);
+    }
+    
+    public void volverAJugar(View v){
+        finish();
+        startActivity(getIntent());
     }
 }
