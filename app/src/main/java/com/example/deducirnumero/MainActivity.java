@@ -19,7 +19,8 @@ public class MainActivity extends AppCompatActivity {
     int i;
     int[] cpu = new int[4]; // va a ser unico y no se va a cambiar (4)
     int[] jugador = new int[4]; // este se va a reemplazar por cada intento, dimension es fija (4)
-    int[] intentos = new int[100]; // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
+    int[] intentos = new int[100];
+    // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
     int cantIntentos;
     int cantIngreso;
     Button btnValidar, salir, nuevoIntento, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
@@ -46,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
         btnValidar.setEnabled(false);
 
         cantIngreso=0;
+        for (int i = 0; i<4; i++){
+            jugador[i]=-1;
+        }
     }
 
     protected void generarNroCpu() {
@@ -90,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
         jugador[cantIngreso] = numBoton;
         cantIngreso++;
 
+        //Se va escribiendo el num mientras se clickea.
+        String aux="";
+        textViewNroIngresado = findViewById(R.id.textViewNroIngresado);
+        //int auxIndice = cantIntentos*6;
+        for (int i = 0; i<4; i++){
+            if (jugador[i]==-1){
+                aux= aux + "_";
+            }else
+                aux= aux + jugador[i];
+        }
+        textViewNroIngresado.setText(aux);
+
         if (cantIngreso==4){
             button_0 = findViewById(R.id.button_0);
             button_1 = findViewById(R.id.button_1);
@@ -114,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
             textViewNroIngresado = findViewById(R.id.textViewNroIngresado);
             //int auxIndice = cantIntentos*6;
-            String aux = jugador[0] + "" + jugador[1] + "" + jugador[2] + "" + jugador[3];
-            textViewNroIngresado.setText(aux);
+            String aux_2 = jugador[0] + "" + jugador[1] + "" + jugador[2] + "" + jugador[3];
+            textViewNroIngresado.setText(aux_2);
 
             btnValidar = findViewById(R.id.btnValidar);
             btnValidar.setEnabled(true);
@@ -152,17 +168,26 @@ public class MainActivity extends AppCompatActivity {
 
     public void validarGanador(View v){
             if (comparar()==4){
-                msjUsuario = findViewById(R.id.msjUsuario);
-                msjUsuario.setText("GANASTE!!!!!");
+                msjUsuario = findViewById(R.id.msjUsuarioGanaste);
+                msjUsuario.setText("¡¡¡¡ GANASTE !!!!!");
                 nuevoIntento = findViewById(R.id.btnNuevoIntento);
                 nuevoIntento.setEnabled(false);
+                btnValidar.setEnabled(false);
             }
             else{
                 cantIngreso = 0;
-                msjUsuario = findViewById(R.id.msjUsuario);
-                msjUsuario.setText("Volvé a intentarlo!");
+                msjUsuario = findViewById(R.id.msjUsuarioPerdiste);
+                msjUsuario.setText("¡VUELVE A INTENTARLO!");
+                btnValidar.setEnabled(false);
+                limpiarLista();
                 actualizarLista();
             }
+    }
+
+    public void limpiarLista(){
+        for (int i = 0; i<4; i++){
+            jugador[i]=-1;
+        }
     }
 
     public void actualizarLista(){
@@ -210,6 +235,11 @@ public class MainActivity extends AppCompatActivity {
 
         textViewNroIngresado = findViewById(R.id.textViewNroIngresado);
         textViewNroIngresado.setText("____");
+        msjUsuario=findViewById(R.id.msjUsuarioGanaste);
+        msjUsuario.setText("");
+        msjUsuario=findViewById(R.id.msjUsuarioPerdiste);
+        msjUsuario.setText("");
+
     }
 
     public void salir(View v){
