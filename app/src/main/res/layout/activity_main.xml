@@ -17,10 +17,12 @@
 
     <ScrollView
         android:id="@+id/listaIntentos"
-        android:layout_width="384dp"
-        android:layout_height="185dp"
+        android:layout_width="376dp"
+        android:layout_height="144dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
+        android:fadeScrollbars="false"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbarStyle="insideInset"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -282,6 +284,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:layout_editor_absoluteX="104dp" />
 
+    <TextView
+        android:id="@+id/nroIntentos"
+        android:layout_width="79dp"
+        android:layout_height="19dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="52dp"
+        android:text="-"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

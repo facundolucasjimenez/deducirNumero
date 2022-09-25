@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     int cantIngreso;
     Button btnValidar, salir, nuevoIntento, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
     Integer[] botones;
-    TextView nro_cpu, textViewNroIngresado, msjUsuario;
+    TextView nro_cpu, textViewNroIngresado, msjUsuario, nroIntentos;
     ScrollView listaIntentos;
 
     @Override
@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnValidar = findViewById(R.id.btnValidar);
         btnValidar.setEnabled(false);
+
+        nuevoIntento = findViewById(R.id.btnNuevoIntento);
+        nuevoIntento.setEnabled(false);
 
         cantIngreso=0;
         for (int i = 0; i<4; i++){
@@ -175,6 +178,10 @@ public class MainActivity extends AppCompatActivity {
                 btnValidar.setEnabled(false);
             }
             else{
+                nroIntentos = findViewById(R.id.nroIntentos);
+                nroIntentos.setText(cantIntentos+"");
+                nuevoIntento = findViewById(R.id.btnNuevoIntento);
+                nuevoIntento.setEnabled(true);
                 cantIngreso = 0;
                 msjUsuario = findViewById(R.id.msjUsuarioPerdiste);
                 msjUsuario.setText("¡VUELVE A INTENTARLO!");
@@ -209,6 +216,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nuevoIntento(View v){
+        nuevoIntento = findViewById(R.id.btnNuevoIntento);
+        nuevoIntento.setEnabled(false);
+
         cantIngreso=0;
 
         btnValidar = findViewById(R.id.btnValidar);
