@@ -1,13 +1,23 @@
 package com.example.deducirnumero;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -27,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
     Integer[] botones;
     TextView nro_cpu, textViewNroIngresado, msjUsuario, nroIntentos;
     ScrollView listaIntentos;
+    public static Activity paraCerrar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        paraCerrar = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         generarNroCpu();
@@ -213,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
             a.setText(aux);
             layout.addView(a);
         }
+
     }
 
     public void nuevoIntento(View v){
@@ -250,6 +263,9 @@ public class MainActivity extends AppCompatActivity {
         msjUsuario=findViewById(R.id.msjUsuarioPerdiste);
         msjUsuario.setText("");
 
+        listaIntentos = findViewById(R.id.listaIntentos);
+        listaIntentos.scrollTo(0, listaIntentos.getHeight());
+
     }
 
     public void salir(View v){
@@ -258,7 +274,49 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void volverAJugar(View v){
-        finish();
-        startActivity(getIntent());
+        mostrarDialogoBasico();
     }
+
+    private void mostrarDialogoBasico(){
+        nro_cpu = findViewById(R.id.nro_cpu);
+        String nroCpuAux = nro_cpu.getText().toString();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("¿QUERÉS VOLVER A JUGAR?");
+        builder.setMessage("EL NUMERO DE LA CPU ERA: "+nroCpuAux)
+                .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"👍👍👍",Toast.LENGTH_SHORT).show();
+                        finish();
+                        startActivity(getIntent());
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(),"Cancelando...",Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    private void addNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                        //.setSmallIcon(R.drawable.abc)
+                        .setContentTitle("Notifications Example")
+                        .setContentText("This is a test notification");
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(contentIntent);
+
+        // Add as notification
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0, builder.build());
+
+    }
+
 }
