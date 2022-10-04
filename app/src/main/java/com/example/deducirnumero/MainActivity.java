@@ -2,15 +2,20 @@ package com.example.deducirnumero;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +27,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
+import android.app.NotificationManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,6 +44,12 @@ public class MainActivity extends AppCompatActivity {
     TextView nro_cpu, textViewNroIngresado, msjUsuario, nroIntentos;
     ScrollView listaIntentos;
     public static Activity paraCerrar;
+
+    //NOTIFICACIONES
+    private Button btnNotificacion;
+    //private PendingIntent pendingIntent;
+    private final static String CHANNEL_ID= "NOTIFICACION";
+    private final static int NOTIFICACION_ID= 0; //PARA CADA NOTIFICACION
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i<4; i++){
             jugador[i]=-1;
         }
+
     }
 
     protected void generarNroCpu() {
@@ -269,13 +282,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void salir(View v){
+        createNotificationChannel();
+        createNotification();
         finish();
-        System.exit(0);
+        //System.exit(0);
+
     }
     
     public void volverAJugar(View v){
         mostrarDialogoBasico();
     }
+
 
     private void mostrarDialogoBasico(){
         nro_cpu = findViewById(R.id.nro_cpu);
@@ -286,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"👍👍👍",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"👍👍👍", Toast.LENGTH_SHORT).show();
                         finish();
                         startActivity(getIntent());
                     }
@@ -318,5 +335,56 @@ public class MainActivity extends AppCompatActivity {
         manager.notify(0, builder.build());
 
     }
+
+
+// CODIGO DE NOTIFICACIONES
+
+// x la versión del android.
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            CharSequence name="Notificacion";
+            NotificationChannel notificationChannel= new NotificationChannel(CHANNEL_ID,name,NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager=(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(notificationChannel);
+        }
+    }
+
+
+    private void createNotification(){
+        /*INTENT
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);*/
+        NotificationCompat.Builder builder =new NotificationCompat.Builder(getApplicationContext(),CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.ic_baseline_tag_faces_24);
+        builder.setContentTitle("VEN A JUGAR");
+        builder.setContentText("Comienza una partida a deducir el numero...");
+        builder.setColor(Color.BLUE);
+        builder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        //Luz en el frontal de la pantalla
+        //builder.setLights(Color.MAGENTA);
+        //Vibracion
+        //builder.setVibrate();
+
+        NotificationManagerCompat notificationManagerCompat= NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.notify(NOTIFICACION_ID,builder.build());
+
+      /*  Intent appIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+        builder.setAutoCancel(true);*/
+
+    }
+/*
+   private void setPendingIntent(){
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(intent);
+        pendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+    }*/
 
 }
