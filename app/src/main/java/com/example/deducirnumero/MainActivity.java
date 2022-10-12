@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     int[] jugador = new int[4]; // este se va a reemplazar por cada intento, dimension es fija (4)
     int[] intentos = new int[100];
     // no sabemos la dimension, que corte cada 6 (4 del nro, 1 de bien y 1 de regular)
-    int cantIntentos;
+    public static int cantIntentos;
     int cantIngreso;
     Button btnValidar, salir, nuevoIntento, button_0, button_1, button_2, button_3, button_4, button_5, button_6, button_7, button_8, button_9;
     Integer[] botones;
@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity {
     
     public void volverAJugar(View v){
         mostrarDialogoBasico();
+        mostrarDialogoPuntaje();
     }
 
 
@@ -317,6 +318,33 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .setCancelable(false)
                 .show();
+    }
+
+    private void mostrarDialogoPuntaje(){
+        nro_cpu = findViewById(R.id.nro_cpu);
+        String nroCpuAux = nro_cpu.getText().toString();
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("¿QUERÉS REGISTRAR TU PUNTAJE?");
+        //builder.setMessage("EL NUMERO DE LA CPU ERA: "+nroCpuAux)
+                builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        irAPuntaje();
+                    }
+                })
+                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    public void irAPuntaje() {
+        Intent intent = new Intent(this, PuntajeActivity.class);
+        startActivity(intent);
     }
 
     private void addNotification() {

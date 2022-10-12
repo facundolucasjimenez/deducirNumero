@@ -3,4 +3,6 @@
     <string name="dialogo">VOLVER A JUGAR?</string>
     <string name="si">SI</string>
     <string name="no">NO</string>
+    <string name="ingresarDni">INGRESAR DNI</string>
+    <string name="ingresarNombre">INGRESAR NOMBRE</string>
 </resources>
