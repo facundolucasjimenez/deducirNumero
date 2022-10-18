@@ -22,8 +22,8 @@
         android:id="@+id/textViewIntentos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="244dp"
-        android:layout_marginEnd="182dp"
+        android:layout_marginTop="236dp"
+        android:layout_marginEnd="172dp"
         android:editable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,8 +32,8 @@
         android:id="@+id/btnRegistrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="71dp"
-        android:layout_marginTop="131dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="36dp"
         android:text="REGISTRAR"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewCantIntentos" />
@@ -42,8 +42,8 @@
         android:id="@+id/btnSalir2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="193dp"
-        android:layout_marginEnd="79dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="100dp"
         android:text="SALIR"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNombre" />
@@ -91,4 +91,16 @@
         android:text="@string/ingresarNombre"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="294dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="436dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

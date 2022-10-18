@@ -16,6 +16,7 @@ public class OperarConBase {
         try {
             db.insert("usuario", null, registro);
             db.close();
+            devolver = true;
         }
             catch(Exception ex){
 
