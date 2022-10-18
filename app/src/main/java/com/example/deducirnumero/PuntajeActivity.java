@@ -27,11 +27,12 @@ public class PuntajeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_puntaje);
 
         textViewDni = findViewById(R.id.textViewDni);
+        textViewDni.requestFocus();
         textViewNombre = findViewById(R.id.textViewNombre);
         textViewCantIntentos = findViewById(R.id.textViewCantIntentos);
 
         btnRegistrar = findViewById(R.id.btnRegistrar);
-        btnRegistrar.setOnClickListener((v) -> { registrar(v);});
+        btnRegistrar.setOnClickListener((v) -> { consulta(v);});
 
         btnSalir = findViewById(R.id.btnSalir2);
         btnSalir.setOnClickListener((v) -> { finish();});
@@ -105,7 +106,7 @@ public class PuntajeActivity extends AppCompatActivity {
             Toast.makeText(this, "No se actualizaron datos", Toast.LENGTH_SHORT).show();
     }
 
-    public void registrar(View v){
+    /*public void registrar(View v){
         Cursor fila = consulta(v);
         if (fila.getCount()!=0) {
             int cantIntentosDB = fila.getInt(1);
@@ -134,5 +135,5 @@ public class PuntajeActivity extends AppCompatActivity {
             a.setText(unDni);
             layout.addView(a);
         }
-    }
+    }*/
 }
