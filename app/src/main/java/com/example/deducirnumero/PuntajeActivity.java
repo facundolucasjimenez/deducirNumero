@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -56,6 +57,8 @@ public class PuntajeActivity extends AppCompatActivity {
             //textViewNombre.setText("");
             //textViewIntentos.setText("");
             Toast.makeText(this, "Datos del jugador cargados", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ScoreActivity.class);
+            startActivity(intent);
         }
         else
             Toast.makeText(this, "ERROR no se cargaron los datos", Toast.LENGTH_SHORT).show();
@@ -100,8 +103,11 @@ public class PuntajeActivity extends AppCompatActivity {
         int cant = bd.update("usuario", registro, "dni="+dni, null);
         bd.close();
 
-        if(cant==1)
+        if(cant==1) {
             Toast.makeText(this, "Datos del jugador cargados", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, ScoreActivity.class);
+            startActivity(intent);
+        }
         else
             Toast.makeText(this, "No se actualizaron datos", Toast.LENGTH_SHORT).show();
     }

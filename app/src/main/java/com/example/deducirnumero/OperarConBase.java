@@ -2,7 +2,10 @@ package com.example.deducirnumero;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.View;
+import android.widget.Toast;
 
 public class OperarConBase {
     public static boolean Alta(Context c, String dni, String nombre, String cantIntentos){

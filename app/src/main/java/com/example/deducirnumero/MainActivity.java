@@ -31,6 +31,7 @@ import android.app.NotificationManager;
 
 public class MainActivity extends AppCompatActivity {
 
+    boolean gano;
     //int nroCpu;
     int i;
     int[] cpu = new int[4]; // va a ser unico y no se va a cambiar (4)
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i<4; i++){
             jugador[i]=-1;
         }
+
+        gano = false;
 
     }
 
@@ -201,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 nuevoIntento = findViewById(R.id.btnNuevoIntento);
                 nuevoIntento.setEnabled(false);
                 btnValidar.setEnabled(false);
+                gano = true;
             }
             else{
                 nroIntentos = findViewById(R.id.nroIntentos);
@@ -290,8 +294,10 @@ public class MainActivity extends AppCompatActivity {
     }
     
     public void volverAJugar(View v){
-        mostrarDialogoBasico();
-        mostrarDialogoPuntaje();
+        if (!gano)
+            mostrarDialogoBasico();
+        else
+            mostrarDialogoPuntaje();
     }
 
 
@@ -335,7 +341,7 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                        dialog.dismiss(); mostrarDialogoBasico();
                     }
                 })
                 .setCancelable(false)
