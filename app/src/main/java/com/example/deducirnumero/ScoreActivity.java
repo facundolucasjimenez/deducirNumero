@@ -86,6 +86,7 @@ public class ScoreActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(),"Cancelando...",Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        finish();
                     }
                 })
                 .setCancelable(false)

@@ -74,7 +74,7 @@ public class PuntajeActivity extends AppCompatActivity {
         Cursor fila = null;
         try{
             fila = bd.rawQuery("select nombre, cantIntentos from usuario where dni=" + dni, null);
-            if(fila.moveToFirst()){
+            if(fila.moveToFirst() ){
                 modificacion(v);
             }
             else{

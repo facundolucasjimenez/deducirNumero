@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i<4; i++){
             jugador[i]=-1;
         }
-
+        cantIngreso=0;
         gano = false;
 
     }
@@ -337,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
                 builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
                         irAPuntaje();
                     }
                 })
