@@ -70,8 +70,7 @@ public class ScoreActivity extends AppCompatActivity {
 
     private void mostrarDialogo(){
         AlertDialog.Builder builder = new AlertDialog.Builder(ScoreActivity.this);
-        builder.setTitle("¿QUERÉS VOLVER A JUGAR?");
-        builder.setMessage("aaaaaa!!!!")
+        builder.setTitle("¿QUERÉS VOLVER A JUGAR?")
                 .setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

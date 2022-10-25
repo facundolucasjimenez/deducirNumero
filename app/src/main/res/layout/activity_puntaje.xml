@@ -92,15 +92,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="294dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="436dp">
+    <Button
+        android:id="@+id/btnResetearTabla"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="75dp"
+        android:layout_marginBottom="116dp"
+        android:text="resetear tabla"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

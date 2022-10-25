@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 public class PuntajeActivity extends AppCompatActivity {
 
-    private Button btnRegistrar, btnSalir;
+    private Button btnRegistrar, btnSalir, btnResetearTabla;
     private TextView textViewDni, textViewNombre, textViewCantIntentos, textViewIntentos;
     private static int cantIntentos;
     private ScrollView listaIntentos;
@@ -37,6 +37,9 @@ public class PuntajeActivity extends AppCompatActivity {
 
         btnSalir = findViewById(R.id.btnSalir2);
         btnSalir.setOnClickListener((v) -> { finish();});
+
+        btnResetearTabla = findViewById(R.id.btnResetearTabla);
+        btnResetearTabla.setOnClickListener((v) -> { resetearTabla("usuario");});
 
 
         cantIntentos = MainActivity.cantIntentos;
@@ -97,19 +100,33 @@ public class PuntajeActivity extends AppCompatActivity {
 
         ContentValues registro = new ContentValues();
 
-        //datos nuevos
-        registro.put("cantIntentos",cantIntentos);
+        String cantIntentosDB = "";
+        Cursor datos;
+        datos = bd.rawQuery("select cantIntentos from usuario where dni="+dni, null);
+        if (datos.moveToFirst()) {
+            cantIntentosDB = datos.getString(0);
+        }
 
-        int cant = bd.update("usuario", registro, "dni="+dni, null);
-        bd.close();
+        int cantIntentosVieja = Integer.parseInt(cantIntentosDB);
+        int cantIntentosNueva = Integer.parseInt(cantIntentos);
+        if (cantIntentosVieja>cantIntentosNueva) {
+            //datos nuevos
+            registro.put("cantIntentos", cantIntentos);
+            int cant = bd.update("usuario", registro, "dni=" + dni, null);
+            bd.close();
 
-        if(cant==1) {
-            Toast.makeText(this, "Datos del jugador cargados", Toast.LENGTH_SHORT).show();
+            if (cant == 1) {
+                Toast.makeText(this, "Datos del jugador cargados", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ScoreActivity.class);
+                startActivity(intent);
+            } else
+                Toast.makeText(this, "No se actualizaron datos, error de bd", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this, "puntaje peor al anterior, no se actualizaron", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, ScoreActivity.class);
             startActivity(intent);
         }
-        else
-            Toast.makeText(this, "No se actualizaron datos", Toast.LENGTH_SHORT).show();
     }
 
     /*public void registrar(View v){
@@ -142,4 +159,11 @@ public class PuntajeActivity extends AppCompatActivity {
             layout.addView(a);
         }
     }*/
+
+    public void resetearTabla(String TABLE_NAME) {
+        String clearDBQuery = "DELETE FROM "+TABLE_NAME;
+        AdminBase admin = new AdminBase(this, "baseDeducirNro", null, 1);
+        SQLiteDatabase db = admin.getWritableDatabase();
+        db.execSQL(clearDBQuery);
+    }
 }

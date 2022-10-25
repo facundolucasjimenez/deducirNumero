@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        cantIntentos = 0;
+
         paraCerrar = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
